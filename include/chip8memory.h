@@ -7,7 +7,7 @@ struct chip8_memory {
 };
 
 void chip8_memory_set(struct chip8_memory* memory, int index, unsigned char val);
-void chip8_memory_get(struct chip8_memory* memory, int index);
+unsigned char chip8_memory_get(struct chip8_memory* memory, int index);
 
 
 #endif
