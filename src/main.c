@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "SDL2/SDL.h"
+#include <stdbool.h>
+#include <windows.h>
 #include "chip8.h"
 #include "chip8keyboard.h"
 
@@ -14,6 +16,7 @@ const char keyboard_map[CHIP8_TOTAL_KEYS] = {
 int main(int argc, char** argv) {
     struct chip8 chip8;
     chip8_init(&chip8);
+    chip8.registers.sound_timer = 255;
     
     chip8_screen_draw_sprite(&chip8.screen, 0, 0, &chip8.memory.memory[0x00], 5);
     
@@ -82,6 +85,16 @@ int main(int argc, char** argv) {
         }
         
         SDL_RenderPresent(renderer);
+
+        if(chip8.registers.delay_timer > 0) {
+            Sleep(100);
+            chip8.registers.delay_timer -= 1;
+        }
+
+        if(chip8.registers.sound_timer > 0) {
+            Beep(8000, 100*chip8.registers.sound_timer);
+            chip8.registers.sound_timer = 0;
+        }
     }
 out:
     SDL_DestroyWindow(window);
