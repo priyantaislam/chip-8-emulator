@@ -38,6 +38,7 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
     
     unsigned short nnn = opcode & 0x0fff;
     unsigned char x = (opcode >> 8) & 0x000f;
+    unsigned char y = (opcode >> 4) & 0x000f;
     unsigned char kk = opcode & 0x00ff;
     switch(opcode & 0xf000){
         //JP addr, 1nnn Jump to location nnn
@@ -54,7 +55,28 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
             if(chip8->registers.V[x] == kk){
                 chip8->registers.PC += 2;
             }
-
+            break;
+        // SNE Vx, byte- 4xkk Skip next instruction if Vx!=kk
+        case 0x4000:
+            if(chip8->registers.V[x] != kk){
+                chip8->registers.PC += 2;
+            }
+            break;
+        //5xy0 - SE, Vx, Vy, skip the next instruction if Vx = Vy
+        case 0x5000:
+            if (chip8->registers.V[x] == chip8->registers.V[y]){
+                chip8->registers.PC += 2;
+            }
+            break;
+        //LD Vx, byte- Vx = KK
+        case 0x6000:
+            chip8->registers.V[x] = kk;
+            break;
+        
+        //7xkk - ADD Vx, byte - Set Vx = Vx + kk
+        case 0x7000:
+            chip8->registers.V[x] += kk;
+            break;
     }
 }
 

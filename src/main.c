@@ -44,6 +44,7 @@ int main(int argc, char** argv) {
     chip8_init(&chip8);
     chip8_load(&chip8, buf, size);
 
+    
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window* window = SDL_CreateWindow(
         EMULATOR_WINDOW_TITLE, 
