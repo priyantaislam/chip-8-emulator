@@ -1,6 +1,6 @@
 # chip-8-emulator
-##Introduction
+## Introduction
 CHIP-8 is an interpreted minimalist programming language that was designed by Joseph Weisbecker in the 1970s for use on the RCA COSMAC VIP computer. Due to its hexadecimal format, it was best suited to machines with a scarcity of memory, as minimal text processing had to be performed by the interpreter before a program could be executed. This property inevitably led to its implementation on a variety of hobbyist computers aside from the VIP, such as the COSMAC ELF, Telmac 1800, and ETI 660.
 
-##Project Description
+## Project Description
 This project is actually CHIP-8 interpreter to be precise, however it does also emulate some of the hardware the programs are meant to run on. I have started this to get into emulation dev and also because I really enjoy love writing code in C. I will properly finish documentation once I have completed the project.
