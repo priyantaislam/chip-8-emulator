@@ -34,6 +34,20 @@ void chip8_load(struct chip8* chip8, const char* buf, size_t size){
 
 }
 
+static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode) {
+    unsigned char x = (opcode >> 8) & 0x000f;
+    unsigned char y = (opcode >> 4) & 0x000f;
+    unsigned char final_four_bits = opcode & 0x000f;
+
+    switch(final_four_bits)
+    {
+        //8xy0- LD Vx, Vy.
+        case 0x00:
+            chip8->registers.V[x] = chip8->registers.V[y];
+        break;
+    }
+}
+
 static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
     
     unsigned short nnn = opcode & 0x0fff;
@@ -76,6 +90,10 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
         //7xkk - ADD Vx, byte - Set Vx = Vx + kk
         case 0x7000:
             chip8->registers.V[x] += kk;
+            break;
+        
+        case 0x8000:
+            chip8_exec_extended_eight(chip8, opcode);
             break;
     }
 }

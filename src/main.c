@@ -44,7 +44,10 @@ int main(int argc, char** argv) {
     chip8_init(&chip8);
     chip8_load(&chip8, buf, size);
 
-    
+    chip8.registers.V[0] = 0x20;
+    chip8.registers.V[1] = 0x30;
+    chip8_exec(&chip8, 0x8010);
+    printf("%x\n", chip8.registers.V[0]);
     SDL_Init(SDL_INIT_EVERYTHING);
     SDL_Window* window = SDL_CreateWindow(
         EMULATOR_WINDOW_TITLE, 
