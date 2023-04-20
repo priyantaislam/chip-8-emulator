@@ -1,6 +1,7 @@
 #include "chip8.h"
 #include <memory.h>
 #include <assert.h>
+#include <stdbool.h>
 
 const char chip8_default_character_set[] = {
     0xf0, 0x90, 0x90, 0x90, 0xf0,   //0
@@ -38,6 +39,7 @@ static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode
     unsigned char x = (opcode >> 8) & 0x000f;
     unsigned char y = (opcode >> 4) & 0x000f;
     unsigned char final_four_bits = opcode & 0x000f;
+    unsigned short temp = 0;
 
     switch(final_four_bits)
     {
@@ -47,15 +49,25 @@ static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode
         break;
         //8xy1 - OR Vx, Vy
         case 0x01:
-            chip8->registers.V[x] |= chip8->registers.V[y]
+            chip8->registers.V[x] |= chip8->registers.V[y];
         break;
         //8xy2 - AND Vx, Vy
         case 0x02:
-            chip8->registers.V[x] &= chip8->registers.V[y]
+            chip8->registers.V[x] &= chip8->registers.V[y];
         break;
         //8xy3 - XOR Vx, Vy
         case 0x03:
-            chip8->registers.V[x] ^= chip8->registers.V[y]
+            chip8->registers.V[x] ^= chip8->registers.V[y];
+        break;
+        //0x8xy4 ADD Vx, Vy set Vx = Vx + Vy
+        case 0x04:
+            temp = chip8->registers.V[x] + chip8->registers.V[y];
+            chip8->registers.V[0x0f] = false;
+            if(temp > 0xff) {
+                chip8->registers.V[0x0f] = true;
+            }
+
+            chip8->registers.V[x] = temp;
         break;
     }
 }
