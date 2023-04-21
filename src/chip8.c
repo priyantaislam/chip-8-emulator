@@ -69,6 +69,13 @@ static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode
 
             chip8->registers.V[x] = temp;
         break;
+        case 0x05:
+            chip8->registers.V[0x0f] = true;
+            if(chip8->registers.V[x] > chip8->registers.V[y]){
+                chip8->registers.V[0x0f] = true;
+            }
+            chip8->registers.V[x] -= chip8->registers.V[y];
+        break;
     }
 }
 
