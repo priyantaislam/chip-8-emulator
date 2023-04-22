@@ -69,12 +69,28 @@ static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode
 
             chip8->registers.V[x] = temp;
         break;
+        //8xy5 - SUB
         case 0x05:
             chip8->registers.V[0x0f] = true;
             if(chip8->registers.V[x] > chip8->registers.V[y]){
                 chip8->registers.V[0x0f] = true;
             }
             chip8->registers.V[x] -= chip8->registers.V[y];
+        break;
+        //8xy6
+        case 0x06:
+            chip8->registers.V[0x0f] = chip8->registers.V[x] & 0x01;
+            chip8->registers.V[x] = chip8->registers.V[x] / 2;
+        break;
+        //8xy7 SUBN
+        case 0x07:
+            chip8->registers.V[0x0f] = chip8->registers.V[y] > chip8->registers.V[x];
+            chip8->registers.V[x] = chip8->registers.V[y] - chip8->registers.V[x];
+        break;
+        //8xye
+        case 0x0E:
+            chip8->registers.V[0x0f] = chip8->registers.V[x] & 0x80;
+            chip8->registers.V[x] = chip8->registers.V[x] * 2;
         break;
     }
 }
