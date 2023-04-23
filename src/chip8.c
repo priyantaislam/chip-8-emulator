@@ -2,6 +2,8 @@
 #include <memory.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <time.h>
 
 const char chip8_default_character_set[] = {
     0xf0, 0x90, 0x90, 0x90, 0xf0,   //0
@@ -156,7 +158,10 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
         case 0xB000:
             chip8->registers.PC = nnn + chip8->registers.V[0x00];
         break;
-        
+        //RND
+        case 0xC000:
+            
+        break;
     }
 }
 
