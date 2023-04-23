@@ -160,7 +160,8 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
         break;
         //RND
         case 0xC000:
-            
+            srand(clock());
+            chip8->registers.V[x] = (rand() % 255) & kk;
         break;
     }
 }
