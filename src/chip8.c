@@ -97,6 +97,17 @@ static void chip8_exec_extended_eight(struct chip8* chip8, unsigned short opcode
     }
 }
 
+static void chip8_exec_extended_F(struct chip8* chip8, unsigned short opcode){
+
+    unsigned char x = (opcode >> 8) & 0x000f;
+    switch (opcde & 0x00ff) 
+    {
+        case 0x07:
+            chip8->registers.V[x] = chip8->registers.delay_timer;
+        break;
+    }
+}
+
 static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
     
     unsigned short nnn = opcode & 0x0fff;
@@ -170,6 +181,29 @@ static void chip8_exec_extended(struct chip8* chip8, unsigned short opcode) {
             const char* sprite = (const char*) &chip8->memory.memory[chip8->registers.I];
             chip8->registers.V[0x0f] = chip8_screen_draw_sprite(&chip8->screen, chip8->registers.V[x], chip8->registers.V[y], sprite, n);
         }
+        break;
+        //Ex9e - Skip next instruction if the key with the value of Vx is pressed
+        //Exa1 - Skip next instruction if the key with the value of Vx is not pressed
+        case 0xE000:
+        {
+            switch(opcode & 0x00ff)
+            {
+                case 0x9e:
+                    if(chip8_keyboard_is_down(&chip8->keyboard,chip8->registers.V[x])){
+                        chip8->registers.PC += 2;
+                    }
+                break;
+
+                case 0xa1:
+                    if(!chip8_keyboard_is_down(&chip8->keyboard,chip8->registers.V[x])){
+                        chip8->registers.PC += 2;
+                    }
+                break;
+            }
+        }
+        break;
+        case 0xF000:
+            chip8_exec_extended_F(chip8, opcode);
         break;
 
     }

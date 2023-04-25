@@ -44,9 +44,10 @@ int main(int argc, char** argv) {
     chip8_init(&chip8);
     chip8_load(&chip8, buf, size);
 
-    //chip8.registers.V[0] = 200;
-    //chip8.registers.V[1] = 80;
-    //chip8_exec(&chip8, 0x8014);
+    chip8.registers.I = 0x00;
+    chip8.registers.V[0] = 10;
+    chip8.registers.V[1] = 10;
+    chip8_exec(&chip8, 0xD015);
     
     //printf("%i\n", chip8.registers.V[0]);
     //printf("%i\n", chip8.registers.V[0x0f]);
