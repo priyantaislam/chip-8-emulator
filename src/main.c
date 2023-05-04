@@ -100,6 +100,7 @@ int main(int argc, char** argv) {
         SDL_RenderClear(renderer);
         SDL_SetRenderDrawColor(renderer, 255, 255, 255, 0);
 
+        //Sleep(10);
         for (int x = 0; x < CHIP8_WIDTH; x++)
         {
             for (int y = 0; y < CHIP8_HEIGHT; y++)
@@ -116,6 +117,7 @@ int main(int argc, char** argv) {
             
         }
         
+        Sleep(1);
         SDL_RenderPresent(renderer);
 
         if(chip8.registers.delay_timer > 0) {

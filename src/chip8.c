@@ -118,11 +118,22 @@ static void chip8_exec_extended_F(struct chip8* chip8, unsigned short opcode){
 
     unsigned char x = (opcode >> 8) & 0x000f;
     switch (opcode & 0x00ff) 
-    {
+    {   
+        /*
+        x07 - LD Vx, DT
+        Set Vx = delay timer value.
+        The value of DT is placed into Vx.
+        */
         case 0x07:
             chip8->registers.V[x] = chip8->registers.delay_timer;
         break;
 
+        /*
+        Fx0A - LD Vx, K
+        Wait for a key press, store the value of the key in Vx.
+        All execution stops until a key is pressed, then the value of that key is stored in
+        Vx.
+        */
         case 0x0A:
         {
             char pressed_key = chip8_wait_for_key_press(chip8);
